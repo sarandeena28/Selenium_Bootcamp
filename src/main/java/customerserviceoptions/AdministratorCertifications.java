@@ -9,23 +9,23 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class AdministratorCertifications {
-	 static String certificationName;
-	 static Set<String> windowHandle;
-		static List<String> windowOpen;
-	public static void main(String[] args) throws InterruptedException {
+public class AdministratorCertifications extends BaseClass{
+	
+		@Test
+	public void AdminCetification()throws InterruptedException {
 		// TODO Auto-generated method stub
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get("https://login.salesforce.com/");
-		driver.findElementById("username").sendKeys("cypress@testleaf.com");
-		driver.findElementById("password").sendKeys("Bootcamp@123");
-		driver.findElementById("Login").click();
+//		WebDriverManager.chromedriver().setup();
+//		ChromeDriver driver=new ChromeDriver();
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//		driver.get("https://login.salesforce.com/");
+//		driver.findElementById("username").sendKeys("cypress@testleaf.com");
+//		driver.findElementById("password").sendKeys("Bootcamp@123");
+//		driver.findElementById("Login").click();
 		driver.findElementByXPath("//button[@title='Learn More']").click();
 		 windowHandle=driver.getWindowHandles();
 		 windowOpen=new ArrayList<String>(windowHandle);

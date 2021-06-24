@@ -16,11 +16,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Classic_NewEvent extends BaseClass {
+	@BeforeTest
+	public void sheet() {
+		sheetName="Classic_NewEvent";
+	}
 	
 	@Test(dataProvider="fetchData")
 	public void testcase(String subject) throws InterruptedException {

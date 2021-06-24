@@ -2,28 +2,28 @@ package customerserviceoptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.Test;
+
+import customerserviceoptions.BaseClass;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class GetServiceNameandVerifyTab {
-	static Set<String> windowHandle;
-	static List<String> windowOpen;
-	public static void main(String[] args) throws InterruptedException {
-		// TODO Auto-generated method stub
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get("https://login.salesforce.com/");
-		driver.findElementById("username").sendKeys("cypress@testleaf.com");
-		driver.findElementById("password").sendKeys("Bootcamp@123");
-		driver.findElementById("Login").click();
+public class GetServiceNameandVerifyTab extends BaseClass {
+	@Test
+	public void getService() throws InterruptedException {
+		
 		driver.findElementByXPath("//button[@title='Learn More']").click();
 		windowHandle=driver.getWindowHandles();
 		windowOpen=new ArrayList<String>(windowHandle);
@@ -44,10 +44,7 @@ public class GetServiceNameandVerifyTab {
 			// String verify=eachValue.getText();
 			 System.out.println(eachValue.getText());
 			
-		}
-		
-		
-		
+		}	
 	}
 
 }

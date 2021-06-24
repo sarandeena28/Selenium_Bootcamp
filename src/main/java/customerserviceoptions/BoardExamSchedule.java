@@ -1,6 +1,7 @@
 package customerserviceoptions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -8,22 +9,22 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class BoardExamSchedule {
-	static Set<String> windowHandle;
-	static List<String> windowOpen;
-	public static void main(String[] args) throws InterruptedException {
+public class BoardExamSchedule extends BaseClass {
+	@Test
+	public void boardExam() throws InterruptedException {
 		// TODO Auto-generated method stub
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get("https://login.salesforce.com/");
-		driver.findElementById("username").sendKeys("cypress@testleaf.com");
-		driver.findElementById("password").sendKeys("Bootcamp@123");
-		driver.findElementById("Login").click();
+//		WebDriverManager.chromedriver().setup();
+//		ChromeDriver driver=new ChromeDriver();
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//		driver.get("https://login.salesforce.com/");
+//		driver.findElementById("username").sendKeys("cypress@testleaf.com");
+//		driver.findElementById("password").sendKeys("Bootcamp@123");
+//		driver.findElementById("Login").click();
 		driver.findElementByXPath("//button[@title='Learn More']").click();
 		windowHandle=driver.getWindowHandles();
 		windowOpen=new ArrayList<String>(windowHandle);
@@ -49,14 +50,32 @@ public class BoardExamSchedule {
 		List<WebElement> Date = driver.findElementsByXPath("//div[text()='Planning']/preceding-sibling::div[2]");
 		for (int i = 0; i < Location.size(); i++) {
 			System.out.println("Location with Planning Status:"+Location.get(i).getText());
-			System.out.println("Date with Planning Status:"+Date.get(i).getText());
-			
-			
+			System.out.println("Date with Planning Status:"+Date.get(i).getText());	
 		}
 		for (int i = 0; i <3; i++) {
 			driver.switchTo().window(windowOpen.get(i));
 			driver.close();
 		}
+		
+//		Iterator<String> iter=windowHandle.iterator();
+//		String[] windowOpens =new String[windowHandle.size()];
+//		int i=0;
+//		while(iter.hasNext()) {
+//			windowOpens[i]=iter.next();
+//			i++;
+//		}
+//		int length = windowOpens.length;
+//		System.out.println(length);
+//		if(windowOpens.length>0)
+//		{
+//			for (int j =windowOpens.length-1; j>0; j--) {
+//				System.out.println(j);
+//				driver.switchTo().window(windowOpens[j-1]);
+//				driver.close();
+//			}
+//		}
+		
+//		driver.switchTo().window(windowOpens[3]);
 		driver.switchTo().window(windowOpen.get(3));
 //		driver.switchTo().window(windowOpen.get(2));
 //		driver.close();

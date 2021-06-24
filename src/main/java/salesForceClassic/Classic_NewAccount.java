@@ -17,38 +17,66 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class Classic_NewAccount {
-
-	public static void main(String[] args) throws InterruptedException {
+public class Classic_NewAccount extends BaseClass{
+	public static String reflectedShippingAddress;
+	public static String billingAddress;
+	@BeforeTest
+	public void sheet() {
+		sheetName="Classic_NewAccount";
+	}
+	@Test(dataProvider="fetchData")
+	public void newAccount(String Name,String Address,String City,String State,String Pincode,String Country) throws InterruptedException {
 		// TODO Auto-generated method stub
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get("https://login.salesforce.com/");
-		driver.findElementById("username").sendKeys("cypress@testleaf.com");
-		driver.findElementById("password").sendKeys("Bootcamp@123");
-		driver.findElementById("Login").click();
+//		WebDriverManager.chromedriver().setup();
+//		ChromeDriver driver=new ChromeDriver();
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//		driver.get("https://login.salesforce.com/");
+//		driver.findElementById("username").sendKeys("cypress@testleaf.com");
+//		driver.findElementById("password").sendKeys("Bootcamp@123");
+//		driver.findElementById("Login").click();
 		driver.findElementByXPath("//span[@class='userProfileCardTriggerRoot oneUserProfileCardTrigger']//button[@type='button']").click();
 		driver.findElementByXPath("//a[contains(text(),'Switch to Salesforce Classic')]").click();
 		driver.findElementByXPath("//span[@id='createNewLabel']").click();
 		driver.findElementByXPath("//a[text()='Account']").click();
-		driver.findElementByXPath("//div[@class='requiredInput']//input").sendKeys("BootCamp Puppeteer_Saranya");
-		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[2]//textarea").sendKeys("1902 SW 20th Ave");
-		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[2]//td[2]//input").sendKeys("Rogers");
-		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[3]//td[2]//input").sendKeys("Arkansas");
-		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[4]//td[2]//input").sendKeys("72713");
-		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[5]//td[2]//input").sendKeys("USA");
+		WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='requiredInput']//input")));
+		driver.findElementByXPath("//div[@class='requiredInput']//input").sendKeys(Name);
+		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[2]//textarea").sendKeys(Address);
+		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[2]//td[2]//input").sendKeys(City);
+		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[3]//td[2]//input").sendKeys(State);
+		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[4]//td[2]//input").sendKeys(Pincode);
+		driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr[5]//td[2]//input").sendKeys(Country);
 		driver.findElementByXPath("//a[contains(text(),'Copy Billing Address to Shipping Address')]").click();
-		String billingAddr=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[4]//textarea").getText();
-		System.out.println(billingAddr);
-		List<WebElement> shippAddress=driver.findElementsByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[4]");
+		String shippingStreetBilling=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[2]//textarea").getAttribute("value");
+		System.out.println(shippingStreetBilling);
+		List<WebElement> billingAddr=driver.findElementsByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[2]//input");
+		int count = billingAddr.size();
+		System.out.println(count);
+		for (int j = 2; j < billingAddr.size(); j++) {
+			billingAddress=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr["+j+"]//td[2]//input").getAttribute("value");
+			System.out.println(billingAddress);
+		}
+		String shippingStreet=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[4]//textarea").getAttribute("value");
+		System.out.println(shippingStreet);
+		List<WebElement> shippAddress=driver.findElementsByXPath("(//table[@class='detailList'])[2]//tbody//tr//td[4]//input");
 		for (int i = 2; i < shippAddress.size(); i++) {
-			String reflectedShippingAddress=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr["+i+"]//td[4]").getText();
+			reflectedShippingAddress=driver.findElementByXPath("(//table[@class='detailList'])[2]//tbody//tr["+i+"]//td[4]//input").getAttribute("value");
 			System.out.println(reflectedShippingAddress);
 		}
+		if(billingAddress.contains(reflectedShippingAddress))
+		{
+			System.out.println("Billing Address reflected in Shipping Address succesfully");
+		}
+		else {
+			System.out.println("Billing Address not reflected in Shipping Address succesfully");
+		}
+		
 		LocalDate today=LocalDate.now();
 		LocalDate date=today.plusDays(20);
 		int monthValue=date.getMonthValue();
@@ -58,14 +86,15 @@ public class Classic_NewAccount {
 		System.out.println(month_name);
 		driver.findElementByXPath("//span[@class='dateInput dateOnlyInput']//input").sendKeys(month_name);
 		driver.findElementByXPath("(//input[@name='save_new'])[2]").click();
-		WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(30));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='mruText']")));
 		String newlyCreatedAccount=driver.findElementByXPath("//span[@class='mruText']").getText();
 		System.out.println(newlyCreatedAccount);
 		String VerifynewAccountWindow=driver.findElementByXPath("//h2[text()=' New Account']").getText();
 		System.out.println(VerifynewAccountWindow);
+		driver.findElementByXPath("//li[@id='MoreTabs_Tab']").click();
+		JavascriptExecutor js=(JavascriptExecutor)driver;
+		js.executeScript("javascript:window.scrollBy(0,500)");
 		driver.findElementByXPath("//a[text()='Accounts']").click();
-		
 		String veriftNewAcoount = driver.findElementByXPath("//th[@scope='row']//a").getText();
 		System.out.println(veriftNewAcoount);
 		if(veriftNewAcoount.contains(newlyCreatedAccount)) {
@@ -75,7 +104,7 @@ public class Classic_NewAccount {
 			System.out.println("Newly Created Item not Displayed");
 		}
 		driver.findElementByXPath("//a[@class='switch-to-lightning']").click();
-		driver.close();
+//		driver.close();
 	}
 
 }

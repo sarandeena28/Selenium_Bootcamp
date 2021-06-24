@@ -15,22 +15,22 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class B2CSolutionArchitect {
-	static Set<String> windowHandle;
-	static List<String> windowOpen;
-	public static void main(String[] args) throws InterruptedException {
+public class B2CSolutionArchitect extends BaseClass {
+	@Test
+	public void B2CArchitect()throws InterruptedException {
 		// TODO Auto-generated method stub
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get("https://login.salesforce.com/");
-		driver.findElementById("username").sendKeys("cypress@testleaf.com");
-		driver.findElementById("password").sendKeys("Bootcamp@123");
-		driver.findElementById("Login").click();
+//		WebDriverManager.chromedriver().setup();
+//		ChromeDriver driver=new ChromeDriver();
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//		driver.get("https://login.salesforce.com/");
+//		driver.findElementById("username").sendKeys("cypress@testleaf.com");
+//		driver.findElementById("password").sendKeys("Bootcamp@123");
+//		driver.findElementById("Login").click();
 		driver.findElementByXPath("//button[@title='Learn More']").click();
 		windowHandle=driver.getWindowHandles();
 		windowOpen=new ArrayList<String>(windowHandle);
@@ -65,9 +65,10 @@ public class B2CSolutionArchitect {
 		String preferredLocationText = driver.findElementByXPath("(//select[@class='m-combined'])[2]//option").getText();
 		System.out.println(preferredLocationText);
 		driver.findElementByXPath("//input[@class='atsInput datepicker']").click();
-		WebElement currentDate = driver.findElementByXPath("//table[@class='calDays']//tbody//tr//td[@class='weekend todayDate']");
+		//WebElement currentDate = driver.findElementByXPath("//table[@class='calDays']//tbody//tr//td[@class='weekend todayDate']");
+		WebElement currentDate = driver.findElementByXPath("//table[@class='calDays']//tbody//tr[2]//td[@class='weekday todayDate']");
 		String Today = currentDate.getText();
-		driver.findElementByXPath("//table[@class='calDays']//tbody//tr//td[@class='weekend todayDate']").click();
+		driver.findElementByXPath("//table[@class='calDays']//tbody//tr[2]//td[@class='weekend todayDate']").click();
 		LocalDate today=LocalDate.now();
 		Month month = today.getMonth();
 		int monthValue = today.getMonthValue();
